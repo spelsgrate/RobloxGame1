@@ -6,7 +6,7 @@ local RunService = game:GetService("RunService")
 -- Attempt to require ProfileService
 local ProfileService
 local success, result = pcall(function()
-    return require(ReplicatedStorage:WaitForChild("ProfileService", 5))
+    return require(ReplicatedStorage.Shared:WaitForChild("ProfileService", 5))
 end)
 
 if not success then
@@ -38,17 +38,17 @@ local function PlayerAdded(player: Player)
     if not ProfileStore then return end
 
     local profile = ProfileStore:LoadProfileAsync("Player_" .. player.UserId)
-    
+
     if profile ~= nil then
         profile:AddUserId(player.UserId) -- GDPR compliance
         profile:Reconcile() -- Fill in missing values from template
-        
+
         -- Handle profile release (e.g. loaded on another server)
         profile:ListenToRelease(function()
             DataManager.Profiles[player] = nil
             player:Kick("Profile released (Joined another server?)")
         end)
-        
+
         if player:IsDescendantOf(Players) then
             DataManager.Profiles[player] = profile
             print("Profile loaded for " .. player.Name)
@@ -71,11 +71,11 @@ end
 function DataManager:Init()
     print("DataManager Initializing...")
     if not ProfileService then return end
-    
+
     for _, player in Players:GetPlayers() do
         task.spawn(PlayerAdded, player)
     end
-    
+
     Players.PlayerAdded:Connect(PlayerAdded)
     Players.PlayerRemoving:Connect(PlayerRemoving)
 end
