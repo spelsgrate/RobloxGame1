@@ -6,9 +6,9 @@ local ServerScriptService = game:GetService("ServerScriptService")
 -- Wait for systems to load
 task.wait(3)
 
-local MonsterClass = require(game:GetService("ReplicatedStorage").Beasts.Monster)
-local FlyingMonster = require(game:GetService("ReplicatedStorage").Beasts.FlyingMonster)
-local TamingHandler = require(ServerScriptService.Systems.TamingHandler)
+local MonsterClass = require(game:GetService("ReplicatedStorage").Shared.Beasts.Monster)
+local FlyingMonster = require(game:GetService("ReplicatedStorage").Shared.Beasts.FlyingMonster)
+local TamingHandler = require(ServerScriptService.Server.Systems.TamingHandler)
 
 local function createTestDragon()
     local model = Instance.new("Model")

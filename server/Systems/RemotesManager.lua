@@ -23,6 +23,7 @@ function RemotesManager:Init()
     ensureRemote("SolarFlare", "RemoteEvent")
     ensureRemote("MountStateChanged", "RemoteEvent")
     ensureRemote("QuestUpdate", "RemoteEvent")
+    ensureRemote("Dismount", "RemoteEvent") -- NEW: For unmounting dragons
     
     print("RemotesManager: Verified Remotes.")
 end

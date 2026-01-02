@@ -55,31 +55,12 @@ function SimpleWorldGen:Generate()
     
     print("🌱 Grass terrain generated (512x512)")
     
-    -- 4. Add some trees for visual interest (FIXED: at terrain surface Y=3)
-    local surfaceY = 3 -- Terrain surface level
-    local treePositions = {
-        Vector3.new(50, surfaceY, 30),
-        Vector3.new(-40, surfaceY, 50),
-        Vector3.new(60, surfaceY, -30),
-        Vector3.new(-50, surfaceY, -40),
-        Vector3.new(30, surfaceY, 60),
-        Vector3.new(-30, surfaceY, -60),
-        Vector3.new(100, surfaceY, 100),
-        Vector3.new(-100, surfaceY, -100),
-    }
-    
-    for _, pos in ipairs(treePositions) do
-        self:CreateTree(pos)
-    end
-    
-    print("🌲 Trees planted")
-    
-    -- 5. Create Hunter Outpost in center
+    -- 4. Create Hunter Outpost in center
     self:CreateOutpost(Vector3.new(0, surfaceY, 80))
     
     print("🏰 Hunter Outpost created")
     
-    -- 6. Mark Hunter spawn points (invisible markers at terrain surface)
+    -- 5. Mark Hunter spawn points (invisible markers at terrain surface)
     local hunterSpawns = Instance.new("Folder")
     hunterSpawns.Name = "HunterSpawns"
     hunterSpawns.Parent = Workspace
@@ -110,35 +91,6 @@ function SimpleWorldGen:Generate()
     print("📍 Hunter spawn points marked")
     
     print("✅ World Generation Complete!")
-end
-
-function SimpleWorldGen:CreateTree(position: Vector3)
-    -- Simple tree model (FIXED: starts at Y=0)
-    local tree = Instance.new("Model")
-    tree.Name = "Tree"
-    
-    -- Trunk (position.Y should be 0, trunk goes UP from there)
-    local trunk = Instance.new("Part")
-    trunk.Name = "Trunk"
-    trunk.Size = Vector3.new(2, 10, 2)
-    trunk.Position = Vector3.new(position.X, 5, position.Z) -- Y=5 is center of 10-unit trunk
-    trunk.Anchored = true
-    trunk.Material = Enum.Material.Wood
-    trunk.BrickColor = BrickColor.new("Brown")
-    trunk.Parent = tree
-    
-    -- Leaves (at top of trunk)
-    local leaves = Instance.new("Part")
-    leaves.Name = "Leaves"
-    leaves.Size = Vector3.new(8, 6, 8)
-    leaves.Position = Vector3.new(position.X, 12, position.Z) -- Top of trunk + half of leaves
-    leaves.Anchored = true
-    leaves.Material = Enum.Material.Grass
-    leaves.BrickColor = BrickColor.new("Dark green")
-    leaves.Shape = Enum.PartType.Ball
-    leaves.Parent = tree
-    
-    tree.Parent = Workspace
 end
 
 function SimpleWorldGen:CreateOutpost(position: Vector3)

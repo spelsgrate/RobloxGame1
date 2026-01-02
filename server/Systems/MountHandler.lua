@@ -15,9 +15,35 @@ FlightInputEvent.Parent = Remotes
 function MountHandler:Init()
     print("MountHandler Initializing...")
     
-    -- Input Listener
+    -- Input Listener (legacy)
     FlightInputEvent.OnServerEvent:Connect(function(player, dragonModel, verticalVal)
         -- Legacy input support (optional)
+    end)
+    
+    -- Dismount Listener (NEW)
+    task.spawn(function()
+        local dismountEvent = Remotes:WaitForChild("Dismount", 10)
+        if not dismountEvent then
+            warn("MountHandler: Dismount remote not found!")
+            return
+        end
+        
+        print("MountHandler: Dismount listener connected")
+        dismountEvent.OnServerEvent:Connect(function(player)
+            print(player.Name .. " requested dismount")
+            
+            -- Find what dragon the player is mounted on
+            for _, dragonModel in workspace:GetChildren() do
+                if dragonModel:IsA("Model") and dragonModel:FindFirstChild("HumanoidRootPart") then
+                    local weld = dragonModel.HumanoidRootPart:FindFirstChild("RiderWeld_"..player.Name)
+                    if weld then
+                        print("Found weld, unmounting from " .. dragonModel.Name)
+                        MountHandler:UnmountDragon(player, dragonModel)
+                        break
+                    end
+                end
+            end
+        end)
     end)
     
     local MountStateEvent = Remotes:FindFirstChild("MountStateChanged") or Instance.new("RemoteEvent")

@@ -53,18 +53,15 @@ end
 -- Secondary Ability (handled in DragonControls as Boost currently)
 -- Could be expanded for special moves
 
--- Dismount (Square/ButtonX)
+-- Dismount (Square/ButtonX or E key)
 local function dismount()
     print("Dismounting...")
     vibrate(Enum.VibrationMotor.Small, 0.5, 0.2)
     
-    local char = player.Character
-    if char then
-        local seat = char:FindFirstChild("Humanoid") and char.Humanoid.SeatPart
-        if seat then
-            char.Humanoid.Sit = false
-            print("Dismounted!")
-        end
+    -- Fire to server to handle unmounting
+    local dismountRemote = Remotes:FindFirstChild("Dismount")
+    if dismountRemote then
+        dismountRemote:FireServer()
     end
 end
 
@@ -83,7 +80,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     -- Keyboard fallbacks
     if input.KeyCode == Enum.KeyCode.R then
         usePrimaryAbility()
-    elseif input.KeyCode == Enum.KeyCode.F then
+    elseif input.KeyCode == Enum.KeyCode.F or input.KeyCode == Enum.KeyCode.E then
         dismount()
     end
 end)
